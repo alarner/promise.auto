@@ -1,0 +1,31 @@
+{
+  "name": "promise.auto",
+  "version": "1.0.0",
+  "description": "An implementation of caolan/async auto method supporting promises instead of callbacks",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register",
+    "build": "./node_modules/.bin/babel src -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alarner/promise.auto.git"
+  },
+  "author": "Aaron Larner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alarner/promise.auto/issues"
+  },
+  "homepage": "https://github.com/alarner/promise.auto#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-register": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "chai": "^3.5.0",
+    "minifyify": "^7.1.0",
+    "mocha": "^2.4.5"
+  }
+}
