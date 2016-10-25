@@ -18,7 +18,7 @@ describe('promise.auto', function() {
 			done();
 		})
 		.catch(err => {
-			console.log(err);
+			done(err);
 		});
 	});
 
@@ -35,7 +35,7 @@ describe('promise.auto', function() {
 			done();
 		})
 		.catch(err => {
-			console.log(err);
+			done(err);
 		});
 	});
 
@@ -61,7 +61,7 @@ describe('promise.auto', function() {
 			done();
 		})
 		.catch(err => {
-			console.log(err);
+			done(err);
 		});
 	});
 
@@ -92,7 +92,47 @@ describe('promise.auto', function() {
 			done();
 		})
 		.catch(err => {
-			console.log(err);
+			done(err);
+		});
+	});
+
+	it('should pass resolved data to dependents', function(done) {
+		let return_five_data_correct = false;
+		let return_six_data_correct = false;
+		auto({
+			return_five: {
+				promise: (resolve, reject, data) => {
+					return_five_data_correct = (
+						(typeof data === "object") &&
+						(data !== null) &&
+						Object.keys(data).length === 0
+					);
+					setTimeout(() => {
+						resolve(5);
+					}, 200);
+				}
+			},
+			return_six: {
+				dependencies: ['return_five'],
+				promise: (resolve, reject, data) => {
+					return_six_data_correct = (
+						(typeof data === "object") &&
+						(data !== null) &&
+						data.return_five === 5
+					);
+					setTimeout(() => {
+						resolve(6);
+					}, 200);
+				}
+			}
+		})
+		.then(data => {
+			expect(return_five_data_correct).to.be.true;
+			expect(return_six_data_correct).to.be.true;
+			done();
+		})
+		.catch(err => {
+			done(err);
 		});
 	});
 });
