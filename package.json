@@ -1,6 +1,6 @@
 {
   "name": "promise.auto",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "An implementation of caolan/async auto method supporting promises instead of callbacks",
   "main": "./dist/index.js",
   "scripts": {
