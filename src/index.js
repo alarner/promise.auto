@@ -32,9 +32,6 @@ module.exports = function(promiseWrappers, options) {
 		}
 
 		function run() {
-			if(count.error && options.stopOnError) {
-				return reject(errors);
-			}
 			for(let key in pw) {
 				let runnable = true;
 				let deps = pw[key].dependencies || [];
@@ -47,11 +44,13 @@ module.exports = function(promiseWrappers, options) {
 				}
 				if(runnable) {
 					count.running++;
-					new Promise((resolve, reject) => {
+					let promise = new Promise((resolve, reject) => {
 						pw[key].promise(resolve, reject, results)
 					})
-					.then(then(key))
-					.catch(error(key));
+					.then(then(key));
+					if(!options.stopOnError) {
+						promise.catch(error(key));
+					}
 
 					delete pw[key];
 				}
