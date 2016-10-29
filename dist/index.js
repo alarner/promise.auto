@@ -51,6 +51,12 @@ module.exports = function (promiseWrappers, options) {
 					}).then(then(key));
 					if (!options.stopOnError) {
 						promise.catch(error(key));
+					} else {
+						promise.catch(function (err) {
+							var errObj = {};
+							errObj[key] = err;
+							reject(errObj);
+						});
 					}
 
 					delete pw[key];

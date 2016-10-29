@@ -135,4 +135,34 @@ describe('promise.auto', function() {
 			done(err);
 		});
 	});
+
+	it('should reject errors if stopOnError is true', function(done) {
+		auto({
+			return_five: {
+				promise: (resolve, reject, data) => {
+					reject('test');
+				}
+			},
+			return_six: {
+				dependencies: ['return_five'],
+				promise: (resolve, reject, data) => {
+					return_six_data_correct = (
+						(typeof data === "object") &&
+						(data !== null) &&
+						data.return_five === 5
+					);
+					setTimeout(() => {
+						resolve(6);
+					}, 200);
+				}
+			}
+		}, { stopOnError: true })
+		.then(data => {
+			done('Expected error to be thrown');
+		})
+		.catch(err => {
+			expect(err).to.deep.equal({return_five: 'test'});
+			done();
+		});
+	});
 });
